@@ -4,10 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uaslp.objetos.list.Iterator;
 
+import uaslp.objetos.list.exceptions.NullNotAllowedException;
+import uaslp.objetos.list.exceptions.WrongIndexException;
+
 public class LinkedListTest {
 
     @Test
-    public void givenANewList_thenSizeIsZero(){
+    public void givenANewList_thenSizeIsZero() throws WrongIndexException, NullNotAllowedException {
         //Given
         LinkedList<String> list= new LinkedList<>();
 
@@ -19,7 +22,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenANewList_whenAddAtTail_thenSizeIsOne(){
+    public void givenANewList_whenAddAtTail_thenSizeIsOne() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
 
@@ -32,7 +35,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenAnEmptyList_whenAddAtTail_thenSizeIsIncreased(){
+    public void givenAnEmptyList_whenAddAtTail_thenSizeIsIncreased() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
@@ -47,7 +50,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenANewList_whenAddAtFront_thenSizeIsOne(){
+    public void givenANewList_whenAddAtFront_thenSizeIsOne() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
 
@@ -60,7 +63,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenANonEmptyList_whenAddAtFront_thenSizeIsIncreased(){
+    public void givenANonEmptyList_whenAddAtFront_thenSizeIsIncreased() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtFront("Uno");
@@ -75,33 +78,29 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenAList_whenRemoveLeesThanSize_thenReturnFalse(){
+    public void givenAList_whenRemoveLeesThanSize_thenReturnFalse() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
+        list.addAtFront("Uno");
 
         //When
-        list.addAtFront("Uno");
-        boolean result = list.remove(-1);
+        Assertions.assertThrows(WrongIndexException.class,() -> list.remove(-1));
 
-        //Then
-        Assertions.assertFalse(result);
     }
 
     @Test
-    public void givenAList_whenRemoveGreaterThanSize_thenReturnFalse(){
+    public void givenAList_whenRemoveGreaterThanSize_thenReturnFalse() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
 
-        //When
         list.addAtFront("Uno");
-        boolean result = list.remove(1);
 
-        //Then
-        Assertions.assertFalse(result);
+        //When
+        Assertions.assertThrows(WrongIndexException.class, ()->list.remove(1));
     }
 
     @Test
-    public void givenAListWithOneElement_whenRemove0_thenReturnTrue(){
+    public void givenAListWithOneElement_whenRemove0_thenReturnTrue() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtFront("Uno");
@@ -114,39 +113,37 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenAListWithTwoElements_whenRemove0_thenReturnTrue(){
+    public void givenAListWithTwoElements_whenRemove0_thenReturnTrue() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
         list.addAtTail("Dos");
 
         //When
-        boolean result = list.remove(0);
+        list.remove(0);
 
         //Then
-        Assertions.assertTrue(result);
         Assertions.assertEquals(1, list.getSize());
         Assertions.assertEquals(list.getAt(0), "Dos");
     }
 
     @Test
-    public void givenAListWithTwoElement_whenRemoveTail_thenReturnTrue(){
+    public void givenAListWithTwoElement_whenRemoveTail_thenReturnTrue() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
         list.addAtTail("Dos");
 
         //When
-        boolean result = list.remove(1);
+        list.remove(1);
 
         //Then
-        Assertions.assertTrue(result);
         Assertions.assertEquals(1, list.getSize());
         Assertions.assertEquals(list.getAt(0), "Uno");
     }
 
     @Test
-    public void givenAListWith3Element_whenRemoveMiddle_thenReturnTrue(){
+    public void givenAListWith3Element_whenRemoveMiddle_thenReturnTrue() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
@@ -154,17 +151,16 @@ public class LinkedListTest {
         list.addAtTail("Tres");
 
         //When
-        boolean result = list.remove(1);
+        list.remove(1);
 
         //Then
-        Assertions.assertTrue(result);
         Assertions.assertEquals(2, list.getSize());
         Assertions.assertEquals(list.getAt(0), "Dos");
         Assertions.assertEquals(list.getAt(1), "Tres");
     }
 
     @Test
-    public void givenAListWith3Element_whenRemoveAll_thenSizeIsZero(){
+    public void givenAListWith3Element_whenRemoveAll_thenSizeIsZero() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
@@ -179,7 +175,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenAListWith3Element_whenSetAt1_thenElementIsModified(){
+    public void givenAListWith3Element_whenSetAt1_thenElementIsModified() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
@@ -187,18 +183,17 @@ public class LinkedListTest {
         list.addAtTail("Tres");
 
         //When
-        boolean result = list.setAt(1,"Cuatro");
+        list.setAt(1,"Cuatro");
 
         //Then
         Assertions.assertEquals(3, list.getSize());
         Assertions.assertEquals("Dos", list.getAt(0));
         Assertions.assertEquals("Cuatro", list.getAt(1));
         Assertions.assertEquals("Tres", list.getAt(2));
-        Assertions.assertTrue(result);
     }
 
     @Test
-    public void givenAListWith3Element_whenSetAtLessThan0_thenReturnNull(){
+    public void givenAListWith3Element_whenSetAtLessThan0_thenReturnNull() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
@@ -206,18 +201,17 @@ public class LinkedListTest {
         list.addAtTail("Tres");
 
         //When
-        boolean result = list.setAt(-1,"Cuatro");
+        Assertions.assertThrows(WrongIndexException.class, () -> list.setAt(-1, "Cuatro"));
 
         //Then
         Assertions.assertEquals(3, list.getSize());
         Assertions.assertEquals("Dos", list.getAt(0));
         Assertions.assertEquals("Uno", list.getAt(1));
         Assertions.assertEquals("Tres", list.getAt(2));
-        Assertions.assertFalse(result);
     }
 
     @Test
-    public void givenAListWith3Element_whenSetAtIndex3_thenReturnNull(){
+    public void givenAListWith3Element_whenSetAtIndex3_thenReturnNull() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
@@ -225,18 +219,17 @@ public class LinkedListTest {
         list.addAtTail("Tres");
 
         //When
-        boolean result = list.setAt(3,"Cuatro");
+        Assertions.assertThrows(WrongIndexException.class, () -> list.setAt(3,"Cuatro"));
 
         //Then
         Assertions.assertEquals(3, list.getSize());
         Assertions.assertEquals("Dos", list.getAt(0));
         Assertions.assertEquals("Uno", list.getAt(1));
         Assertions.assertEquals("Tres", list.getAt(2));
-        Assertions.assertFalse(result);
     }
 
     @Test
-    public void givenAListWith2Elements_whenAddAtFront_thenArrayIsIncreasedSuccessfully(){
+    public void givenAListWith2Elements_whenAddAtFront_thenArrayIsIncreasedSuccessfully() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
         list.addAtTail("Uno");
@@ -254,35 +247,29 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenAnArray_whenGetAtNegative_thenNullIsReturned(){
+    public void givenAnArray_whenGetAtNegative_thenNullIsReturned() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
 
         list.addAtFront("Algo");
 
         //When
-        String value = list.getAt(-1);
-
-        //Then
-        Assertions.assertNull(value);
+        Assertions.assertThrows(WrongIndexException.class, ()->list.getAt(-1));
     }
 
     @Test
-    public void givenAnArray_whenGetAtIndexGreaterThanSize_thenNullIsReturned(){
+    public void givenAnArray_whenGetAtIndexGreaterThanSize_thenNullIsReturned() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<String> list = new LinkedList<>();
 
         list.addAtFront("Algo");
 
         //When
-        String value = list.getAt(1);
-
-        //Then
-        Assertions.assertNull(value);
+        Assertions.assertThrows(WrongIndexException.class, ()->list.getAt(1));
     }
 
     @Test
-    public void givenAnArray_whenRemoveAllWithValue_thenValuesAreRemoved(){
+    public void givenAnArray_whenRemoveAllWithValue_thenValuesAreRemoved() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<Integer> list = new LinkedList<>();
 
@@ -306,7 +293,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenAnArrayWithNoCoincidences_whenRemoveAllWithValue_thenValuesAreRemoved(){
+    public void givenAnArrayWithNoCoincidences_whenRemoveAllWithValue_thenValuesAreRemoved() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<Integer> list = new LinkedList<>();
 
@@ -327,7 +314,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void givenAnNonEmptyList_whenIterate_thenIterationIsSuccessful(){
+    public void givenAnNonEmptyList_whenIterate_thenIterationIsSuccessful() throws WrongIndexException, NullNotAllowedException{
         //Given
         LinkedList<Integer> list = new LinkedList<>();
 
